@@ -33,12 +33,18 @@ public class FileShareClient {
                     continue;
                 case 2:
                     os.println("2");
-                    System.out.println("Enter file name: ");
+                    System.out.println("Enter filename: ");
                     fileName = stdin.readLine();
                     os.println(fileName);
                     receiveFile(fileName);
                     continue;
                 case 3:
+                    os.println("3");
+                    System.out.println("Enter filename to delete: ");
+                    fileName = stdin.readLine();
+                    os.println(fileName);
+                    deleteFile(fileName);
+                case 4:
                     sock.close();
                     System.exit(1);
             }
@@ -48,10 +54,12 @@ public class FileShareClient {
 
     }
         }
+
     public static String selectAction() throws IOException {
         System.out.println("1. Send file.");
         System.out.println("2. Receive file.");
-        System.out.println("3. Exit.");
+        System.out.println("3. Delete file.");
+        System.out.println("4. Exit.");
         System.out.println("\nMake selection: ");
 
         return stdin.readLine();
@@ -83,12 +91,13 @@ public class FileShareClient {
             dos.writeLong(mybytearray.length);
             dos.write(mybytearray, 0, mybytearray.length);
             dos.flush();
-            System.out.println("File "+fileName+" sent to Server.");
+            System.out.println("File "+fileName+" sent to SushiShareServer.");
         } catch (Exception e) {
             System.err.println("Exception: "+e);
         }
     }
 
+    //Receive file from server
     public static void receiveFile(String fileName) {
         try {
             int bytesRead;
@@ -108,11 +117,19 @@ public class FileShareClient {
             output.close();
             in.close();
 
-            System.out.println("File "+fileName+" received from Server.");
+            System.out.println("File "+fileName+" received from SushiShareServer.");
         } catch (IOException ex) {
             System.out.println("Exception: "+ex);
         }
-
     }
 
+    // Delete file from the server
+    public static void deleteFile(String fileName) {
+        try {
+            deleteFile(fileName);
+            System.out.println("File " + fileName + " deleted from SushiShareServer");
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+    }
 }
