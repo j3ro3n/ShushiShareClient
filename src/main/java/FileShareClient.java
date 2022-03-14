@@ -51,9 +51,8 @@ public class FileShareClient {
         } catch(Exception e){
             System.err.println("No valid input");
         }
-
     }
-        }
+}
 
     public static String selectAction() throws IOException {
         System.out.println("1. Send file.");
