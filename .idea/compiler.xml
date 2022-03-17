@@ -9,5 +9,8 @@
         <module name="SushiShareClient" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="SushiShareClient" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

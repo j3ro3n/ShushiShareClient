@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SushiShareClient.iml" filepath="$PROJECT_DIR$/.idea/SushiShareClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SushiShareClient.iml" filepath="$PROJECT_DIR$/SushiShareClient.iml" />
     </modules>
   </component>
 </project>

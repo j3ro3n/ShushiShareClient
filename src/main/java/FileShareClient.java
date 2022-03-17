@@ -29,21 +29,21 @@ public class FileShareClient {
                 switch (Integer.parseInt(selectAction())) {
                 case 1:
                     os.println("1");
-                    sendFile();
+                    pushFile();
                     continue;
                 case 2:
                     os.println("2");
                     System.out.println("Enter filename: ");
                     fileName = stdin.readLine();
                     os.println(fileName);
-                    receiveFile(fileName);
+                    pullFile(fileName);
                     continue;
                 case 3:
                     os.println("3");
                     System.out.println("Enter filename to delete: ");
                     fileName = stdin.readLine();
                     os.println(fileName);
-                    deleteFile(fileName);
+                    removeFile(fileName);
                 case 4:
                     sock.close();
                     System.exit(1);
@@ -55,15 +55,15 @@ public class FileShareClient {
 }
 
     public static String selectAction() throws IOException {
-        System.out.println("1. Send file.");
-        System.out.println("2. Receive file.");
-        System.out.println("3. Delete file.");
+        System.out.println("1. Push file.");
+        System.out.println("2. Pull file.");
+        System.out.println("3. Remove file.");
         System.out.println("4. Exit.");
         System.out.println("\nMake selection: ");
 
         return stdin.readLine();
 }
-    public static void sendFile() {
+    public static void pushFile() {
         try {
             System.out.println("Enter file name: ");
             fileName = stdin.readLine();
@@ -90,14 +90,14 @@ public class FileShareClient {
             dos.writeLong(mybytearray.length);
             dos.write(mybytearray, 0, mybytearray.length);
             dos.flush();
-            System.out.println("File "+fileName+" sent to SushiShareServer.");
+            System.out.println("File "+fileName+" pushed to SushiShareServer.");
         } catch (Exception e) {
             System.err.println("Exception: "+e);
         }
     }
 
     //Receive file from server
-    public static void receiveFile(String fileName) {
+    public static void pullFile(String fileName) {
         try {
             int bytesRead;
             InputStream in = sock.getInputStream();
@@ -116,17 +116,17 @@ public class FileShareClient {
             output.close();
             in.close();
 
-            System.out.println("File "+fileName+" received from SushiShareServer.");
+            System.out.println("File "+fileName+" pulled from SushiShareServer.");
         } catch (IOException ex) {
             System.out.println("Exception: "+ex);
         }
     }
 
     // Delete file from the server
-    public static void deleteFile(String fileName) {
+    public static void removeFile(String fileName) {
         try {
-            deleteFile(fileName);
-            System.out.println("File " + fileName + " deleted from SushiShareServer");
+            removeFile(fileName);
+            System.out.println("File " + fileName + " removed from SushiShareServer");
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
