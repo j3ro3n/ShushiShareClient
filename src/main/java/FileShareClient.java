@@ -1,9 +1,13 @@
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+
+import static java.lang.System.in;
 
 //import com.sushi.components.file_transfer.fileSender.send(SushiObject)
 //SushiOrder sushiOrder = mew SushiOrder(Push, "localhost, 8080, new SushiHeader("Content-lenght, file.lenght);
@@ -23,7 +27,7 @@ public class FileShareClient {
         while (true) {
             try {
                 sock = new Socket(host, port);
-                stdin = new BufferedReader(new InputStreamReader(System.in));
+                stdin = new BufferedReader(new InputStreamReader(in));
             } catch (Exception e) {
                 System.err.println("Can't connect to the server, try again later.");
                 System.exit(1);
@@ -124,6 +128,7 @@ public class FileShareClient {
             in.close();
 
             System.out.println("File "+fileName+" pulled from SushiShareServer.");
+
         } catch (IOException ex) {
             System.out.println("Exception: "+ex);
         }
@@ -131,40 +136,48 @@ public class FileShareClient {
 
     // Delete file from the server
     public static void removeFile(String fileName) {
-        //try {
-        //    System.out.println("Enter filename to delete: ");
-        //    fileName = stdin.readLine();
-//
-        //    File myFile = new File (fileName);
-        //    byte[] mybytearray = new byte[(int) myFile.length()];
-        //    if(!myFile.exists()) {
-        //        System.out.println("File "+fileName+" does not exist...");
-        //        return;
-        //    }
+        try {
+            System.out.println("Enter filename to delete: ");
+            fileName = stdin.readLine();
+
+            FileInputStream fis = new FileInputStream(fileName);
+
+            if (delete(fileName)) {
+                System.out.println("The file "+fileName+" is deleted.");
+            }
+
+            if(!fileName.exists()) {
+                System.out.println("File " + fileName + " does not exist...");
+                return;
+            }
+
+            } catch (IOException ex){
+                System.out.println("Exception: "+ex);
+            }
 //
         //    //removeFile(fileName);
         //        System.out.println("File " + fileName + " has been removed from SushiShareServer");
 
 
 
-            try {
-                Files.deleteIfExists(
-                        Paths.get("C:\\Users\\Jeroen\\IdeaProjects\\SushiShareServer\\"+fileName));
-            }
-            catch (NoSuchFileException e) {
-                System.out.println(
-                        "No such file/directory exists");
-            }
-            catch (DirectoryNotEmptyException e) {
-                System.out.println("Directory is not empty.");
-            }
-            catch (IOException e) {
-                System.out.println("Invalid permissions.");
-            }
-            catch (Exception e) {
-                System.out.println("Exception: " + e);
-            }
-
-            System.out.println("Deletion successful.");
+            //try {
+            //    Files.deleteIfExists(
+            //            Paths.get("C:\\Users\\Jeroen\\IdeaProjects\\SushiShareServer\\"+fileName));
+            //}
+            //catch (NoSuchFileException e) {
+            //    System.out.println(
+            //            "No such file/directory exists");
+            //}
+            //catch (DirectoryNotEmptyException e) {
+            //    System.out.println("Directory is not empty.");
+            //}
+            //catch (IOException e) {
+            //    System.out.println("Invalid permissions.");
+            //}
+            //catch (Exception e) {
+            //    System.out.println("Exception: " + e);
+            //}
+//
+            //System.out.println("Deletion successful.");
             }
 }
