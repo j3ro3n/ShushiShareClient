@@ -30,23 +30,32 @@ public class FileShareClient {
                 case 1:
                     os.println("1");
                     pushFile();
-                    continue;
+                    break;
                 case 2:
                     os.println("2");
                     System.out.println("Enter filename: ");
                     fileName = stdin.readLine();
                     os.println(fileName);
                     pullFile(fileName);
-                    continue;
+                    break;
                 case 3:
                     os.println("3");
                     System.out.println("Enter filename to delete: ");
                     fileName = stdin.readLine();
                     os.println(fileName);
                     removeFile(fileName);
-                case 4:
+                    break;
+                    case 4:
+                        os.println("4");
+                        System.out.println("Enter filename to synchronise: ");
+                        fileName = stdin.readLine();
+                        os.println(fileName);
+                        syncFile(fileName);
+                        break;
+                case 5:
                     sock.close();
                     System.exit(1);
+
             }
         } catch(Exception e){
             System.err.println("No valid input");
@@ -58,7 +67,8 @@ public class FileShareClient {
         System.out.println("1. Push file.");
         System.out.println("2. Pull file.");
         System.out.println("3. Remove file.");
-        System.out.println("4. Exit.");
+        System.out.println("4. Sync file.");
+        System.out.println("5. Exit.");
         System.out.println("\nMake selection: ");
 
         return stdin.readLine();
@@ -125,10 +135,51 @@ public class FileShareClient {
     // Delete file from the server
     public static void removeFile(String fileName) {
         try {
-            removeFile(fileName);
-            System.out.println("File " + fileName + " removed from SushiShareServer");
-        } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            File myFile = new File(fileName);
+            if(myFile.delete()){
+                System.out.println(myFile.getName() + " is removed!");
+            }else{
+                System.out.println("Failed to delete "+fileName);
+            }
+        }catch(Exception e){
+            //e.printStackTrace();
+            System.out.println("File does not exist!");
+        }
+    }
+
+    // Synchronise files to and from server
+    public static void syncFile(String fileName){
+        FileInputStream fin;
+        FileOutputStream fout;
+        // Initializing a FileDescriptor
+        FileDescriptor fd;
+        File file = new File(fileName);
+        try {
+            fout= new FileOutputStream(file);
+            // This getFD() method is called before closing the output stream
+            fd= fout.getFD();
+            //passing FileDescriptor to another  FileOutputStream
+            FileOutputStream fout2= new FileOutputStream(fd);
+            //Hier kan fout gaan
+            //fout2.write("Hoi Sunny".getBytes());
+            fout2.write(fileName.getBytes());
+            // Use of sync() : to sync data to the source file
+            fd.sync();
+            System.out.println("Sync Successful");
+            fin = new FileInputStream(file);
+            fd=fin.getFD();
+            System.out.print("String value has been changed in file -----> ");
+            int i=0;
+            while((i=fin.read())!=-1)
+            {
+                System.out.print(i);
+            }
+            fout2.close();
+        }
+
+        catch(Exception e)
+        {
+            System.out.println(e);
         }
     }
 }
